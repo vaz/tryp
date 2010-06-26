@@ -2,6 +2,12 @@
 
 module Tryp
   class Timer
+    def self.get(resolution)
+      @timers ||= {}
+      return @timers[resolution] if @timers[resolution]
+      return @timers[resolution] = self.new(resolution)
+    end
+
     def initialize(resolution)
       @resolution = resolution
       @queue = []

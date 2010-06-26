@@ -14,8 +14,20 @@ module Tryp
     OFF = 0x80
     PC  = 0xc0
 
-    def initialize
+    attr_reader :interval
+
+    def initialize(bpm=120)
+      @interval = 60.0 / bpm
+      @timer = Timer.get(@interval/10)
       open
+    end
+
+    def play(channel, note, duration, velocity=100, time=nil)
+      on_time = time || Time.now.to_f
+      @timer.at(on_time){ note_on channel, note, velocity }
+
+      off_time = on_time + duration
+      @timer.at(off_time){ note_off channel, note, velocity }
     end
 
     def note_on(channel, note, velocity=100)
