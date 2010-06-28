@@ -1,2 +1,5 @@
-Trypmine is for making noise.
+Tryp is for making noise.
 
+It doesn't do anything interesting yet.
+
+But it is written for Ruby 1.9, has FFI wrappers for CoreMIDI, alsa and winmm.
