@@ -1,9 +1,9 @@
 if RUBY_PLATFORM.include? 'darwin'
-  require_relative 'coremidi'
+  require_relative 'drivers/coremidi'
 elsif RUBY_PLATFORM.include? 'linux'
-  require_relative 'alsa'
+  require_relative 'drivers/alsa'
 elsif RUBY_PLATFORM.include? 'mswin'
-  require_relative 'winmm'
+  require_relative 'drivers/winmm'
 else
   raise "No MIDI support for #{RUBY_PLATFORM}"
 end

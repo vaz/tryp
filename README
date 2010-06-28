@@ -3,3 +3,16 @@ Tryp is for making noise.
 It doesn't do anything interesting yet.
 
 But it is written for Ruby 1.9, has FFI wrappers for CoreMIDI, alsa and winmm.
+
+
+TODO:
+
+I want to use MIDIator, but it currently breaks with Snow Leopard and
+is using Ruby DL, which breaks on 1.9 because the API's changed.
+
+aberant has a MIDIator fork that is active and seems to be going in the
+right direction.
+
+More TODO:
+
+make this do something cool.

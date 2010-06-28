@@ -1,6 +1,6 @@
 %w(
-  midi/midi
-  timing/timer
-  things/metronome
+  tryp/midi
+  tryp/timing/timer
+  tryp/things/metronome
 ).each { |f| require_relative f }
 
