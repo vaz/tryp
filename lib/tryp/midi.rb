@@ -15,11 +15,13 @@ module Tryp
     PC  = 0xc0
 
     attr_reader :interval
+    attr_reader :timer
 
     def initialize(bpm=120)
       @interval = 60.0 / bpm
       @timer = Timer.get(@interval/10)
       open
+      log "initializing MIDI system with bpm #{bpm}"
     end
 
     def play(channel, note, duration, velocity=100, time=nil)
@@ -28,6 +30,9 @@ module Tryp
 
       off_time = on_time + duration
       @timer.at(off_time){ note_off channel, note, velocity }
+      
+      log "MIDI#play channel=#{channel} note=#{note} " + 
+          "duration=#{duration} velocity=#{velocity} time=#{time}"
     end
 
     def note_on(channel, note, velocity=100)
