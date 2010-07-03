@@ -17,14 +17,19 @@ module Tryp
     attr_reader :interval
     attr_reader :timer
 
-    def initialize(bpm=120)
+    def initialize bpm=120
       @interval = 60.0 / bpm
       @timer = Timer.get(@interval/10)
       open
       log "initializing MIDI system with bpm #{bpm}"
     end
 
-    def play(channel, note, duration, velocity=100, time=nil)
+    def [] i
+      raise ArgumentError, "channel must be (0..15)" unless (0..15) === i
+      @channel ||= Channel.new(self, i)
+    end
+
+    def play channel, note, duration, velocity=100, time=nil
       on_time = time || Time.now.to_f
       @timer.at(on_time){ note_on channel, note, velocity }
 
@@ -35,16 +40,33 @@ module Tryp
           "duration=#{duration} velocity=#{velocity} time=#{time}"
     end
 
-    def note_on(channel, note, velocity=100)
+    def note_on channel, note, velocity=100
       message ON | channel, note, velocity
     end
 
-    def note_off(channel, note, velocity=100)
+    def note_off channel, note, velocity=100
       message OFF | channel, note, velocity
     end
 
-    def program_change(channel, preset)
+    def program_change channel, preset
       message PC | channel, preset
+    end
+
+    class Channel
+      def initialize midi_out, channel_number
+        unless (0..15) === channel_number
+          raise ArgumentError, "channel must be in (0..15)" 
+        end
+        @out, @channel = midi_out, channel_number
+      end
+
+      def play note, duration, velocity=100
+        @out.play @channel, note, duration, velocity
+      end
+
+      def program_change preset
+        @out.program_change @channel, preset
+      end
     end
   end
 end

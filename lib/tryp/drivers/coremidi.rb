@@ -10,6 +10,7 @@ ARCH_64_BIT = ['meow'].pack('p').size * 8 == 64
 module Tryp
   class MIDI
     def open
+      log "Opening MIDI connection"
       # Create MIDI client
       client_name = CF.CFStringCreateWithCString(nil, "TrypMIDI", 0)
       client_ptr = FFI::MemoryPointer.new(:pointer)
@@ -24,11 +25,13 @@ module Tryp
 
       # Get first available MIDI destination or die
       destinations = C.MIDIGetNumberOfDestinations
+      log "Found #{destinations} destinations, choosing first"
       raise NoMIDIDestinations if destinations < 1
       @destination = C.MIDIGetDestination(0)
     end
 
     def close
+      log "Closing MIDI connection"
       C.MIDIClientDispose(@client)
     end
 

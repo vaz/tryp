@@ -1,5 +1,6 @@
 %w(
   tryp/logging
+  tryp/note
   tryp/midi
   tryp/timing/timer
   tryp/things/metronome
