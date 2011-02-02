@@ -41,11 +41,11 @@ module Tryp
     end
 
     def note_on channel, note, velocity=100
-      message ON | channel, note, velocity
+      message ON | channel, note.to_note.value, velocity
     end
 
     def note_off channel, note, velocity=100
-      message OFF | channel, note, velocity
+      message OFF | channel, note.to_note.value, velocity
     end
 
     def program_change channel, preset

@@ -3,6 +3,6 @@
   tryp/note
   tryp/midi
   tryp/timing/timer
-  tryp/things/metronome
+  tryp/timing/metronome
 ).each { |f| require_relative f }
 

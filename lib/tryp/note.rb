@@ -19,11 +19,9 @@ module Tryp
     # Note.new(440.0)   # => MIDI note 69, concert A4 (440 Hz)
     def initialize value
       if value.is_a? Integer then return from_i value end
-      if value.is_a? String then return from_s value end
       if value.is_a? Symbol then return from_sym value end
       if value.is_a? Float then return from_f value end
-      raise ArgumentError, 
-        "Can't coerce #{value.class} to #{self.class}: #{value}"
+      return from_s value.to_s
     end
 
     def eql? other; hash == other.to_note.hash end
