@@ -19,7 +19,7 @@ module Tryp
 
     def initialize bpm=120
       @interval = 60.0 / bpm
-      @timer = Timer.get(@interval/10)
+      @timer = Timer.get(@interval/100)
       open
       log "initializing MIDI system with bpm #{bpm}"
     end
