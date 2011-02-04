@@ -1,13 +1,18 @@
 Tryp is for making noise.
 
-It doesn't do anything interesting yet.
+It is written for Ruby 1.9, has FFI wrappers for CoreMIDI, alsa and winmm.
 
-But it is written for Ruby 1.9, has FFI wrappers for CoreMIDI, alsa and winmm.
+Right now it can play MIDI with some half-decent timing, and smart notes
+(you can use symbols like :C, :Db, or strings like 'C#', etc).
 
+You can do a metronome yay.
+
+Also now you can make it make polyrhythms and print out the tabs and
+play them via MIDI (and control the bpm and stuff).
 
 TODO:
 
-I want to use MIDIator, but it currently breaks with Snow Leopard and
+I wanted to use MIDIator, but it currently breaks with Snow Leopard and
 is using Ruby DL, which breaks on 1.9 because the API's changed.
 
 aberant has a MIDIator fork that is active and seems to be going in the
