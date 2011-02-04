@@ -6,7 +6,7 @@ module Tryp
     
     NOTE_REGEX = %r{
       (?<prime>       [A-Ga-g])
-      (?<accidental>  \# | b | sharp | flat)?
+      (?<accidental>  \# | b | s | sharp | flat)?
       (?<octave>      -?\d)?
     }x
 
@@ -15,7 +15,8 @@ module Tryp
     # Note.new(60)      # => MIDI note 60 (middle C or C4)
     # Note.new('C4')    # => MIDI note 60 (C4)
     # Note.new('C#4')   # => MIDI note 61, etc.
-    # Note.new(:C4)     # => MIDI note 60, etc.
+    # Note.new(:Cs4')   # => MIDI note 61.
+    # Note.new(:C4)     # => MIDI note 60.
     # Note.new(440.0)   # => MIDI note 69, concert A4 (440 Hz)
     def initialize value
       if value.is_a? Integer then return from_i value end
@@ -64,6 +65,7 @@ module Tryp
 
 
     private
+
     def from_i i
       if (0..127) === i
         @value = i
@@ -81,9 +83,9 @@ module Tryp
       m = NOTE_REGEX.match(s)
       raise ArgumentError, "#{s} fails the regex" if m.nil?
       prime, accidental, octave = m[:prime].upcase, m[:accidental], m[:octave]
-      @value = 12 * (octave.to_i + 1) + PRIME_BASES.index(prime) # TODO: slow?
+      @value = 12 * (octave.to_i + 1) + PRIME_BASES.index(prime)
       case accidental.downcase
-      when '#', 'sharp' then sharpen!
+      when '#', 's', 'sharp' then sharpen!
       when 'b', 'flat' then flatten!
       else raise ArgumentError, "bad accidental #{accidental}"
       end unless accidental.nil?
@@ -92,10 +94,10 @@ module Tryp
     # frequency to midi note
     # equal temperament, preserves cents in ivar (unused so far)
     # n = 69 + 12 * log2(f/440)
-    # this is maybe kind of slow ok? don't abuse it. or make it faster.
+    # this is maybe kind of slow ok? don't abuse it. else make it faster.
     def from_f f
       value = 69 + 12 * (Math.log(f/440.0) / Math.log(2))
-      one, cents = value.divmod(value)
+      _, cents = value.divmod(value.to_i)
       @value, @cents = value, (cents * 100).round
     end
   end
