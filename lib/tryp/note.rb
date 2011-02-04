@@ -6,7 +6,7 @@ module Tryp
     
     NOTE_REGEX = %r{
       (?<prime>       [A-Ga-g])
-      (?<accidental>  \# | b | s | sharp | flat)?
+      (?<accidental>  \# | b | s(?:harp)? | flat)?
       (?<octave>      -?\d)?
     }x
 

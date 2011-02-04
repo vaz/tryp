@@ -2,6 +2,7 @@ require 'rake'
 require 'spec/rake/spectask'
 
 task :default => [:spec]
+task :test => [:spec]
 
 desc "Run specs"
 Spec::Rake::SpecTask.new('spec') do |t|
