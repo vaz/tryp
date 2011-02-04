@@ -25,28 +25,39 @@ module Tryp
     attr_accessor :midi
 
     def initialize spec, strategy, bpm=120, channel=0, note1=:C3, note2=:C2
-      x, y = spec.split(':').map &:to_i
-      lcm = x.lcm(y)
-      one, two = ['-'] * x, ['-'] * y
-      if strategy == :simple
-        one[0] = 'x'
-        two[0] = 'x'
-      elsif strategy == :interesting
-        one[0] = 'x'
-        two[0] = 'x'
-        one[(x/2)] = 'x'
-      elsif strategy == :weird
-        one[0] = 'x'
-        two[0] = 'x'
-        one[(x/2)] = 'x'
-        two[(y/2)] = 'x'
+      x, y = spec.split(':')
+      if spec[0].to_i.nonzero?
+        # passed in something like 5:3
+        x, y = [x, y].map &:to_i
+        lcm = x.lcm(y)
+        one, two = ['-'] * x, ['-'] * y
+        if strategy == :simple
+          one[0] = 'x'
+          two[0] = 'x'
+        elsif strategy == :interesting
+          one[0] = 'x'
+          two[0] = 'x'
+          one[(x/2)] = 'x'
+        elsif strategy == :weird
+          one[0] = 'x'
+          two[0] = 'x'
+          one[(x/2)] = 'x'
+          two[(y/2)] = 'x'
+        end
+        one = one * (lcm/x)
+        two = two * (lcm/y)
+        one = one.join('')
+        two = two.join('')
+      else
+        # passed in something like x--:x---
+        one, two = x, y
+        x, y = [x, y].map &:length
+        lcm = x.lcm(y)
+        one = one * (lcm/x)
+        two = two * (lcm/y)
       end
-      one = one * (lcm/x)
-      two = two * (lcm/y)
-      one = one.join('')
-      two = two.join('')
 
-      @patterns = [Pattern.new(one), Pattern.new(two)]
+      @patterns = [one, two].map { |p| Pattern.new(p) }
       @notes = [note1, note2]
       @spec = spec
       @beats_per_bar = lcm
